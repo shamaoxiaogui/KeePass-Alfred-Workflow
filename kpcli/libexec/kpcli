@@ -41,6 +41,7 @@ use Term::ReadKey;           # non-core, libterm-readkey-perl on Ubuntu
 use Term::ShellUI;           # non-core, libterm-shellui-perl on Ubuntu
 use File::KeePass 0.03;      # non-core, libfile-keepass-perl on Ubuntu
                              #  - >=v0.03 needed due critical bug fixes
+use utf8;
 
 # A developer convenience to force using a particular Term::ReadLine module
 our $FORCED_READLINE = undef;	# Auto-select
@@ -5482,4 +5483,3 @@ Microsoft Windows
 =pod SCRIPT CATEGORIES
 
 C<UNIX/System_administration>, C<Win32/Utilities>
-

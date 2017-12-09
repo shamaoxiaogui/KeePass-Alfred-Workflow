@@ -11,7 +11,7 @@ import json
 from workflow import Workflow3, ICON_WEB, web
 from workflow import Variables
 
-DEBUG = False
+DEBUG = True
 DBLOCATION = os.getenv('dblocation', 'default_value')
 KEYCHAIN_NAME = os.getenv('keychain_name', 'alfred-keepass-pass')
 KEYFILE_LOCATION = os.getenv('keyfile', '')
@@ -56,17 +56,17 @@ def main(wf):
 
     # matches found
     if index == 0:
-        itemNames = []
+        numbers = []
         process.sendline("n")
         process.expect("kpcli:/>")
         process.sendline("ls /_found/")
         process.expect("kpcli:/>")
         for line in process.before.split("\n"):
             if re.match("[0-9]\.", line):
-                name = ".".join(line.split(".")[1:]).strip()
-                itemNames.append(name)
-        for name in itemNames:
-            process.sendline("show /_found/" + name.replace(" ", "\ "))
+                number = line.split(".")[0].strip()
+                numbers.append(number)
+        for number in numbers:
+            process.sendline("show -f " + number)
             process.expect("kpcli:/>")
             addItemDetails(process)
 
@@ -94,13 +94,6 @@ def addItemDetails(process):
             path = ":".join(line.split(":")[1:]).strip()
         if "Uname" in line:
             username = ":".join(line.split(":")[1:]).strip()
-    argument = path + name
-
-    process.sendline("show -f " + argument.replace(" ", "\ "))
-
-    process.expect("kpcli:/>")
-    
-    for line in process.before.split("\n"):
         if "Pass" in line:
             password = ":".join(line.split(":")[1:]).strip()
 
